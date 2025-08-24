@@ -4,6 +4,7 @@ from models import Move, GameState
 from game_manager import GameManager
 from typing import List
 import json
+import os
 
 app = FastAPI()
 manager = GameManager()
@@ -71,3 +72,9 @@ async def websocket_endpoint(websocket: WebSocket, game_id: str):
         active_connections[game_id].remove(websocket)
         if len(active_connections[game_id]) == 0:
             active_connections.pop(game_id)
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
+
